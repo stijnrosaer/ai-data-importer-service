@@ -59,28 +59,6 @@ def construct_insert_file_query(virtualFile, physicalFile):
     )
 
 
-def construct_get_file_by_id(file_id):
-    query_template = Template("""
-    PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
-    PREFIX nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>
-    SELECT (?file AS ?uri)
-    WHERE {
-        GRAPH $graph {
-            ?file a nfo:FileDataObject ;
-                mu:uuid $uuid .
-        }
-    }
-    LIMIT 1
-    """)
-    return query_template.substitute(
-        graph=sparql_escape_uri("http://mu.semte.ch/application"),
-        uuid=sparql_escape_string(file_id))
-
-
-def get_file_by_id(id):
-    return query(construct_get_file_by_id(id))
-
-
 def postfile(filePath, fileName):
     """
     Store a file in data store
